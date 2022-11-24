@@ -10,11 +10,17 @@ public class PlayerController : MonoBehaviour
     private float turnSpeed = 50.0f;
     private float horizontalInput;
     private float borderRange = 7.0f;
+    public ParticleSystem smokeParticle;
+    public ParticleSystem dirtParticle;
+    public AudioClip collectionSound;
+    public AudioClip crashSound;
+    private AudioSource carAudio;
 
     // Start is called before the first frame update
     void Start()
     {
         carRb = GetComponent<Rigidbody>();
+        carAudio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -32,7 +38,7 @@ public class PlayerController : MonoBehaviour
             }
 
             horizontalInput = Input.GetAxis("Horizontal");
-            transform.Rotate(Vector3.up, turnSpeed * horizontalInput * Time.deltaTime);
+            transform.Translate(Vector3.right * turnSpeed * horizontalInput * Time.deltaTime);
         }
     }
 
@@ -41,15 +47,16 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isOnGround = true;
-        }
-        else if (collision.gameObject.CompareTag("Barrier"))
+            dirtParticle.Play();
+
+        } else if (collision.gameObject.CompareTag("Barrier"))
         {
             gameOver = true;
             Debug.Log("Game Over!");
-        }
-        else if (collision.gameObject.CompareTag("Wheel"))
+            carAudio.PlayOneShot(crashSound, 1.0f);
+        } else if (collision.gameObject.CompareTag("Wheel"))
         {
-
+            carAudio.PlayOneShot(collectionSound, 1.0f);
         }
     }
 }
