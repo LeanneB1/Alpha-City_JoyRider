@@ -6,7 +6,7 @@ public class MoveForward : MonoBehaviour
 {
     private float speed = 30;
     private PlayerController playerControllerScript;
-    //private float forwardBound = -15;
+    private float forwardBound = -15;
 
     // Start is called before the first frame update
     void Start()
@@ -22,10 +22,10 @@ public class MoveForward : MonoBehaviour
         {
             transform.Translate(Vector3.forward * Time.deltaTime * speed);
         }
-       // if (transform.position.y < forwardBound && gameObject.CompareTag("Barrier"))
-        //{
-          //  Destroy(gameObject);
-        //}
+        if (transform.position.y < forwardBound && gameObject.CompareTag("Barrier"))
+        {
+            Destroy(gameObject);
+        }
     }
 }
 
